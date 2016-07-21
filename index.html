@@ -1,0 +1,208 @@
+
+<!-- 
+Stop your guy from running off the screen
+Put the goblin in a random spot
+COnsolidate any code you can
+Find a different background
+Add a second goblin
+Add something the hero should avoid!
+Add a counter for high score (you'll need to create the div or add it to the DOM)
+Post the high score and current score
+Alert the user if they reach the high score.
+Make it better. 
+examples
+-http://codeybarber.com/
+-http://tristanlobaugh.com/canvasgame/
+-http://willybman.com/shark-game/
+-http://freddycalk.com/projects/goblins/
+-->
+
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Goblin Hunter</title>
+	<link rel="stylesheet" href="">
+</head>
+<body>
+<h3>Get 270 Electoral Votes to enter the White House</h3>
+<div id="currentScoreContainer">
+
+	<p id="currentScore">
+	</p>
+</div>
+<script type="text/javascript">
+var currentScore = [];
+
+// Create the canvas tag with javascript
+var canvas = document.createElement('canvas');
+// Create a context for Javascript to play inside of
+var context = canvas.getContext('2d');
+
+// Give the canvas tag some substance. 
+canvas.width = 512;
+canvas.height = 454;
+
+console.dir(canvas);
+
+
+// Put the Canvas element in the document
+document.body.appendChild(canvas);
+
+var bgImage = new Image();
+bgImage.src = "background.png";
+
+
+// OUR STUFF GOES HERE
+var hero = new Image();
+hero.src = "trump.png";
+
+var goblin = new Image();
+goblin.src = "hillary.jpg";
+
+var heroLocation = {
+	x: Math.random() *512,
+	y: Math.random() *454
+
+
+}
+
+var goblinLocation = {
+	x: Math.random() * 512,
+	y: Math.random() * 454
+}
+// This array will hold the keycodes that are currently pressed down
+var keysDown = [];
+
+// Make the hero move	!!!
+
+addEventListener('keydown', function(event) {
+	keysDown[event.keyCode] = true;
+});
+
+addEventListener('keyup', function(event){
+	delete keysDown[event.keyCode];
+});
+function update(){
+
+	if (39 in keysDown) {
+		// Move him Right
+		heroLocation.x += 10;
+	}
+	if (37 in keysDown) {
+		// Move him Left
+		heroLocation.x -= 10;
+
+	}
+
+	if (40 in keysDown) {
+		// Move him up
+		heroLocation.y += 10;
+	}
+	
+	if (38 in keysDown) {
+		// Move him down
+		heroLocation.y -= 10;
+	}
+	// If the hero runs into the goblin, do X
+	if ((heroLocation.x <= goblinLocation.x +64)
+		&& (heroLocation.y <= goblinLocation.y +64) 
+		&& (goblinLocation.x <= heroLocation.x +64)
+		&& (goblinLocation.y <= heroLocation.y +64)
+		)
+	{
+		reset();
+		spawnGoblin();
+		currentScore++;
+
+	}
+
+		if(heroLocation.x > 128 && heroLocation.x < 329 && heroLocation.y > 145 && heroLocation.y <210) {
+			heroLocation.x = 129;
+			heroLocation.y = 142;
+		
+		}
+
+		if(heroLocation.x > 109 && heroLocation.x < 341 && heroLocation.y > 152 && heroLocation.y < 272){
+			heroLocation.x = 108;
+			heroLocation.y = 274;
+
+		}
+
+	
+	if(heroLocation.x > 452){
+			heroLocation.x = 26;
+		}
+		else if(heroLocation.x< 25){
+			heroLocation.x = 451;
+		}else if(heroLocation.y > 418){
+			heroLocation.y = 29;
+		}else if(heroLocation.y < 28){
+			heroLocation.y = 417;
+		}
+		if(goblinLocation.x > 452){
+			goblinLocation.x = 26;
+		}else if(goblinLocation.x < 25){
+			goblinLocation.x = 451;
+		}else if(goblinLocation.y > 418){
+			goblinLocation.y = 29;
+		}else if(goblinLocation.y < 28){
+			goblinLocation.y = 417;
+		}	
+	document.getElementById("currentScore").innerHTML = "Electoral Votes" + currentScore;
+	
+	}
+	if(window.currentScore === 5) {
+		window.alert("You have won the white house, Congratulations, Mr. President!");
+		console.log(heroLocation);
+		reset();
+		resetScore();
+}
+
+	
+
+	
+
+
+
+function spawnGoblin(){
+	goblinLocation.x = Math.floor(Math.random()*390) + 60;
+	goblinLocation.y = Math.floor(Math.random()*360) + 60;
+
+	
+}
+
+// });
+
+// Left - 37
+// Up- 38
+// Right- 39
+// Down- 40
+// If the hero runs into the goblin, do X
+// Make the goblin reappear after the hero captures him. 
+function resetScore() {
+	window.currentScore === 0;
+}
+function reset () {
+	goblinLocation.x = Math.random() * 512;
+	goblinLocation.y = Math.random() * 454;
+}
+
+
+function draw() {
+	// This is where javascript draws our stuff
+	update();
+	context.drawImage(bgImage,0,0);
+	context.drawImage(hero, heroLocation.x, heroLocation.y);
+	context.drawImage(goblin, goblinLocation.x, goblinLocation.y);
+	requestAnimationFrame(draw);
+}
+
+draw();
+
+
+</script>	
+</body>
+</html>
